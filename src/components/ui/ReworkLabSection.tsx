@@ -2,103 +2,106 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Wrench, Printer, Flame, Sparkles, Microscope } from "lucide-react";
-import { LiquidMetalButton } from "./LiquidMetalButton";
+import { Wrench, ArrowUpRight, CheckCircle2, QrCode, Hammer, Box, Crosshair } from "lucide-react";
 import { ReworkModal } from "./ReworkModal";
 
 export function ReworkLabSection() {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const reworkCapabilities = [
+  const capabilities = [
     {
-      icon: Printer,
-      title: "Additive Manufacturing & 3D Prototyping",
-      desc: "Rapid SLA/SLS and industrial metal 3D printing for functional prototypes, bracketry iterations, and fit-up validation prior to hard tooling.",
-      specs: ["Dimensional Accuracy: ±0.05mm", "Materials: PEEK, Titanium Ti6Al4V, Carbon-Nylon", "Turnaround: Under 48 Hours"],
+      id: "01",
+      icon: Crosshair,
+      title: "Precision Drilling & Custom Tapping",
+      spec: "Tolerances: ±0.025 mm (0.001 in)",
+      desc: "Drilling precision pilot holes, custom mounting patterns, and metric/SAE thread tapping for complex stamping assemblies.",
     },
     {
-      icon: Flame,
-      title: "Laser Etching & Serialized Marking",
-      desc: "Fiber-laser permanent 2D DataMatrix UID marking, VIN etching, and deep metal engraving conforming to SAE and OEM traceability mandates.",
-      specs: ["High-Speed Fiber Laser (50W)", "Direct Part Marking (DPM)", "ISO/IEC 15415 Verified"],
+      id: "02",
+      icon: Hammer,
+      title: "Certified Welding & Fastener Remediation",
+      spec: "AWS D1.1 / D1.2 Certified",
+      desc: "Addition and retrofitting of weld nuts, weld studs, and structural spot/MIG/TIG weld reinforcement on automotive sheet metal.",
     },
     {
-      icon: Sparkles,
-      title: "Precision TIG/MIG & Micro-Welding",
-      desc: "Specialized weld rework and structural reinforcement on aluminum subframes, high-strength steel chassis members, and battery enclosures.",
-      specs: ["Certified AWS D1.1 / D1.2 Welders", "Purged Inert Gas Shielding", "Destructive & Non-Destructive Quality Testing"],
+      id: "03",
+      icon: Box,
+      title: "Additive 3D Rapid Prototyping",
+      spec: "Materials: PEEK, Carbon-Nylon, Ti-6Al-4V",
+      desc: "High-speed functional 3D printing of custom vehicle brackets, sensor housings, and ergonomic assembly jigs.",
     },
     {
-      icon: Microscope,
-      title: "Metrology & Quality Assurance",
-      desc: "On-site CMM coordinate measurement, 3D optical scanning, and resident engineering support for immediate assembly-line defect remediation.",
-      specs: ["Zeiss 3D Optical Metrology", "GD&T Statistical Process Control (SPC)", "Resident Engineer Dispatch"],
+      id: "04",
+      icon: QrCode,
+      title: "Laser Etching & Part Number Tracking",
+      spec: "50W Fiber Laser • 2D DataMatrix UID",
+      desc: "Direct Part Marking (DPM) for serialized part numbers, VIN traceability, and AIAG-compliant high-contrast barcoding.",
     },
   ];
 
   return (
     <>
-      <section id="rework" className="py-24 relative border-t border-carbon-800 bg-carbon-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="rework" className="py-28 relative bg-sylva-bg border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-carbon-900 border border-hazard-500/30 text-hazard-400 text-xs">
+            <div className="space-y-3 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono tracking-widest text-sylva-ink-soft uppercase">
                 <Wrench className="w-3.5 h-3.5" />
-                <span className="telemetry-tag font-semibold">// RAPID PRODUCTION & REWORK LAB</span>
+                <span>// PRODUCTION REWORK & PROTOTYPING LAB</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white uppercase tracking-tight">
-                Rapid Tooling, Rework & Advanced Prototyping
+              <h2 className="text-3xl sm:text-4xl font-light text-white tracking-tight">
+                Rapid shop-floor rework & <span className="italic font-normal text-accent-pale">resident quality dispatch</span>.
               </h2>
-              <p className="text-titanium-400 text-sm max-w-2xl">
-                Novi, Michigan facility equipped with rapid prototyping, laser marking, certified welding, and CMM metrology to solve critical assembly-line bottlenecks.
+              <p className="text-sylva-ink-soft text-sm leading-relaxed font-light">
+                Rapid containment, precision laser marking, certified welding, and custom 3D printing directly supporting assembly plants across the Detroit automotive corridor.
               </p>
             </div>
 
-            <LiquidMetalButton onClick={() => setModalOpen(true)} variant="amber">
-              Request Rework Dispatch
-            </LiquidMetalButton>
+            <button
+              onClick={() => setModalOpen(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-paper-card hover:bg-white text-paper-ink text-xs font-mono uppercase tracking-widest transition-all shadow-paper-soft hover:shadow-paper-hover"
+            >
+              <span>Dispatch Rework Team</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </button>
           </div>
 
           {/* Capabilities Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {reworkCapabilities.map((item, index) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {capabilities.map((item, index) => {
               const Icon = item.icon;
               return (
                 <motion.div
-                  key={index}
+                  key={item.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  transition={{ duration: 0.6, delay: index * 0.08 }}
                   onClick={() => setModalOpen(true)}
-                  className="hud-panel p-6 sm:p-8 rounded-2xl border border-carbon-750 bg-carbon-900/60 hover:bg-carbon-850/80 hover:border-hazard-500/50 transition-all group cursor-pointer"
+                  className="p-7 rounded-[2.5rem] bg-paper-card text-paper-ink shadow-paper-soft hover:shadow-paper-hover transition-all duration-300 flex flex-col justify-between group cursor-pointer"
                 >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-carbon-800 border border-carbon-700 flex items-center justify-center text-hazard-400 group-hover:scale-105 group-hover:border-hazard-500/50 transition-all">
-                      <Icon className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-hazard-300 transition-colors">
-                        {item.title}
-                      </h3>
-                      <span className="telemetry-tag text-titanium-500 text-[10px]">
-                        MICHIGAN FACILITY • IN-HOUSE CAPABILITY
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-paper-label">
+                        SERVICE // {item.id}
                       </span>
+                      <div className="w-8 h-8 rounded-full bg-paper-surface border border-black/5 flex items-center justify-center text-paper-ink group-hover:rotate-12 transition-transform shadow-sm">
+                        <Icon className="w-3.5 h-3.5" />
+                      </div>
                     </div>
+
+                    <h3 className="text-lg font-normal text-paper-ink tracking-tight mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-paper-label text-xs leading-relaxed mb-4 font-light">
+                      {item.desc}
+                    </p>
                   </div>
 
-                  <p className="text-titanium-400 text-xs sm:text-sm leading-relaxed mb-6">
-                    {item.desc}
-                  </p>
-
-                  <div className="space-y-2 pt-4 border-t border-carbon-800/80">
-                    {item.specs.map((spec, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs text-titanium-300 font-mono">
-                        <span className="w-1.5 h-1.5 rounded-full bg-hazard-500" />
-                        <span>{spec}</span>
-                      </div>
-                    ))}
+                  <div className="pt-4 border-t border-black/5 flex items-center gap-2 text-[11px] font-mono text-paper-ink/80">
+                    <CheckCircle2 className="w-3 h-3 text-paper-label" />
+                    <span>{item.spec}</span>
                   </div>
                 </motion.div>
               );

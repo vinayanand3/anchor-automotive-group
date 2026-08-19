@@ -6,6 +6,7 @@ import { BiwHeroViewer } from "./BiwHeroViewer";
 import { ArrowUpRight, ShieldCheck, Compass, Layers, Cpu, ArrowDown } from "lucide-react";
 import { AcademyModal } from "./AcademyModal";
 import { ReworkModal } from "./ReworkModal";
+import { LiquidMetalSylvaButton } from "./LiquidMetalSylvaButton";
 
 export function SylvaHero() {
   const [academyOpen, setAcademyOpen] = useState(false);
@@ -39,11 +40,14 @@ export function SylvaHero() {
             </h1>
           </div>
 
-          <div className="lg:col-span-5 lg:pt-8">
-            <p className="text-sylva-ink-soft text-sm sm:text-base leading-relaxed font-light">
+          <div className="lg:col-span-5 lg:pt-4 flex flex-col items-start">
+            <p className="text-sylva-ink-soft text-sm sm:text-base leading-relaxed font-light mb-2">
               Anchor Automotive Group provides end-to-end Body-in-White kinematics, 800V EV powertrain architecture, and precision digital-twin validation for OEM innovators.
             </p>
-            <div className="flex items-center gap-6 mt-4 text-xs font-mono text-sylva-ink-faint">
+            <div className="my-1">
+              <LiquidMetalSylvaButton />
+            </div>
+            <div className="flex items-center gap-6 mt-1 text-xs font-mono text-sylva-ink-faint">
               <span>LOCATION: NOVI, MI (DETROIT METRO)</span>
               <span>•</span>
               <span>ISO 26262 ASIL-D</span>
