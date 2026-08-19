@@ -81,22 +81,22 @@ export function BiwHeroViewer() {
   return (
     <div className="relative w-full flex flex-col items-center">
       {/* ── Mode Selection Toolbar (Sylva Glass Pill) ────────────────── */}
-      <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-sylva-surface/90 border border-white/10 shadow-lg backdrop-blur-md mb-6 z-20">
+      <div className="flex items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 rounded-2xl bg-sylva-surface/90 border border-white/10 shadow-lg backdrop-blur-md mb-6 z-20 max-w-[calc(100vw-2rem)] overflow-x-auto no-scrollbar">
         <button
           onClick={() => setMode("spotlight")}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-medium tracking-wide transition-all ${
+          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-medium tracking-wide transition-all whitespace-nowrap ${
             mode === "spotlight"
               ? "bg-paper-card text-paper-ink shadow-md"
               : "text-sylva-ink-soft hover:text-white hover:bg-white/5"
           }`}
         >
           <Scan className="w-3.5 h-3.5" />
-          <span>Interactive X-Ray</span>
+          <span>Interactive <span className="hidden xs:inline">X-Ray</span></span>
         </button>
 
         <button
           onClick={() => setMode("slider")}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-medium tracking-wide transition-all ${
+          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-medium tracking-wide transition-all whitespace-nowrap ${
             mode === "slider"
               ? "bg-paper-card text-paper-ink shadow-md"
               : "text-sylva-ink-soft hover:text-white hover:bg-white/5"
@@ -108,26 +108,26 @@ export function BiwHeroViewer() {
 
         <button
           onClick={() => setMode("solid")}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-medium tracking-wide transition-all ${
+          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-medium tracking-wide transition-all whitespace-nowrap ${
             mode === "solid"
               ? "bg-paper-card text-paper-ink shadow-md"
               : "text-sylva-ink-soft hover:text-white hover:bg-white/5"
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
-          <span>Solid Alloy</span>
+          <span>Solid<span className="hidden xs:inline"> Alloy</span></span>
         </button>
 
         <button
           onClick={() => setMode("mesh")}
-          className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-medium tracking-wide transition-all ${
+          className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-medium tracking-wide transition-all whitespace-nowrap ${
             mode === "mesh"
               ? "bg-paper-card text-paper-ink shadow-md"
               : "text-sylva-ink-soft hover:text-white hover:bg-white/5"
           }`}
         >
           <Eye className="w-3.5 h-3.5" />
-          <span>FEA Wireframe</span>
+          <span>FEA<span className="hidden xs:inline"> Wireframe</span></span>
         </button>
       </div>
 

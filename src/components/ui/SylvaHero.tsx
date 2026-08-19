@@ -11,10 +11,11 @@ import { LiquidMetalSylvaButton } from "./LiquidMetalSylvaButton";
 export function SylvaHero() {
   const [academyOpen, setAcademyOpen] = useState(false);
   const [reworkOpen, setReworkOpen] = useState(false);
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
   return (
     <>
-      <section className="relative w-full min-h-screen sylva-hero-light flex flex-col justify-between pt-24 pb-16 px-4 sm:px-6 lg:px-12 overflow-hidden select-none">
+      <section className="relative w-full min-h-screen sylva-hero-light flex flex-col justify-between pt-28 sm:pt-36 lg:pt-32 pb-16 px-4 sm:px-6 lg:px-12 overflow-hidden select-none">
         {/* Column Guides (Sylva Reference Design) */}
         <div className="column-guides">
           <div className="column-guide left-[12%]" />
@@ -28,13 +29,33 @@ export function SylvaHero() {
           ANCHOR
         </div>
 
-        {/* Top Header Region (Headline + Lede) */}
+        {/* Top Header Region (Brand Identity + Headline + Lede) */}
         <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-4">
-          <div className="lg:col-span-7 space-y-3">
+          <div className="lg:col-span-7 space-y-4">
+            {/* Prominent Company Brand Identity */}
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 p-2 rounded-2xl bg-paper-card text-paper-ink border border-white/60 shadow-md flex items-center justify-center flex-none">
+                <img
+                  src={`${basePath}/images/logo.png`}
+                  alt="Anchor Automotive Group"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div>
+                <h2 className="text-base sm:text-xl font-medium tracking-wider text-white uppercase flex items-center gap-2">
+                  <span>Anchor Automotive Group</span>
+                </h2>
+                <div className="text-[11px] font-mono tracking-widest text-accent-pale uppercase">
+                  Detroit Metro Tech Center • Novi, MI
+                </div>
+              </div>
+            </div>
+
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono tracking-widest text-sylva-ink-soft uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-accent-pale" />
               <span>TIER-1 ADVANCED MOBILITY CONSULTANCY</span>
             </div>
+
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-light tracking-tight text-white leading-[1.08]">
               Engineering the <span className="font-normal italic text-accent-pale">next architecture</span> of mobility.
             </h1>
