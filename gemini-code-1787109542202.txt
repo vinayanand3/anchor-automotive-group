@@ -1,0 +1,12 @@
+Project: Revamp of Anchor Automotive Group website (B2B Engineering Consultancy).
+Goal: Build a high-end, interactive 3D website inspired by the Meng To "Sylva" repository.
+Deployment target: GitHub Pages (Static HTML/JS export).
+
+Tech Stack:
+- Next.js (App Router, Static Export mode enabled)
+- Tailwind CSS
+- React Three Fiber (R3F) & Drei (for 3D rendering)
+- Framer Motion (for spring-physics UI and layout animations)
+
+Current Task:
+Please initialize the Next.js environment configured for a static export to GitHub Pages. Include the `next.config.mjs` setup with unoptimized images, and scaffold a basic layout utilizing a dark, high-contrast industrial aesthetic. Once initialized, set up a basic React Three Fiber canvas component on the main page ready to accept a .glb CAD model.

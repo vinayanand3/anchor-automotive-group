@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --ink: #ffffff;
+    --ink-soft: rgba(255, 255, 255, 0.65);
+    --ink-faint: rgba(255, 255, 255, 0.44);
+    --rule: rgba(255, 255, 255, 0.055);
+
+    --card: #f2f3ef;
+    --card-ink: #23261f;
+    --card-label: #7c8177;
+
+    --sylva-bg: #383b34;
+  }
+
+  body {
+    color: var(--ink);
+    background-color: var(--sylva-bg);
+    font-family: var(--font-lexend), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ── Light pool floor from Sylva ────────────────────────────────── */
+.sylva-hero-light {
+  background:
+    radial-gradient(72% 44% at 50% 117%, rgba(238, 243, 231, 0.45) 0%, rgba(238, 243, 231, 0.18) 42%, rgba(238, 243, 231, 0.04) 72%, transparent 88%),
+    linear-gradient(180deg, rgba(238, 243, 231, 0) 54%, rgba(238, 243, 231, 0.03) 78%, rgba(238, 243, 231, 0.085) 100%),
+    radial-gradient(64% 52% at 27% 84%, rgba(232, 238, 222, 0.085) 0%, transparent 72%),
+    radial-gradient(70% 60% at 92% 8%, rgba(24, 28, 20, 0.10) 0%, transparent 68%),
+    #4a4d44;
+}
+
+/* ── Column guide lines ────────────────────────────────────────── */
+.column-guides {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.column-guide {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.06) 15%, rgba(255, 255, 255, 0.06) 85%, transparent 100%);
+}
+
+/* ── Ghost watermark typography ────────────────────────────────── */
+.ghost-typography {
+  font-size: clamp(6rem, 18vw, 22rem);
+  line-height: 0.78;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.045);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ── Custom Sylva-grade scrollbars ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2b2e27;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4d44;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7c8177;
+}
+
+/* ── Vertical text helper ──────────────────────────────────────── */
+.writing-vertical {
+  writing-mode: vertical-rl;
+}
+
+/* ── Specular edge rim ─────────────────────────────────────────── */
+.specular-rim {
+  position: relative;
+}
+
+.specular-rim::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.02) 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
