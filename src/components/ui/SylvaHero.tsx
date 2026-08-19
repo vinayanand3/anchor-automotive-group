@@ -66,14 +66,8 @@ export function SylvaHero() {
                 </div>
               </div>
 
-              {/* Right on Mobile/Tablet: Sleek Inline Hamburger & Quick CTA */}
-              <div className="flex lg:hidden items-center gap-2">
-                <a
-                  href="#consultancy"
-                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-medium border border-white/15 transition-colors"
-                >
-                  Consult
-                </a>
+              {/* Right on Mobile/Tablet: Sleek Inline Hamburger */}
+              <div className="flex lg:hidden items-center">
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="w-10 h-10 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/15 flex items-center justify-center shadow-md transition-colors"

@@ -8,7 +8,6 @@ import {
   GraduationCap,
   FileLock2,
   Compass,
-  ArrowUpRight,
 } from "lucide-react";
 
 interface DockItemProps {
@@ -16,10 +15,9 @@ interface DockItemProps {
   icon?: React.ElementType;
   label: string;
   href: string;
-  isCta?: boolean;
 }
 
-function DockItem({ mouseX, icon: Icon, label, href, isCta }: DockItemProps) {
+function DockItem({ mouseX, icon: Icon, label, href }: DockItemProps) {
   const ref = useRef<HTMLAnchorElement>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -35,22 +33,6 @@ function DockItem({ mouseX, icon: Icon, label, href, isCta }: DockItemProps) {
   const ySync = useTransform(distance, [-160, 0, 160], [0, -2, 0]);
   const y = useSpring(ySync, { mass: 0.1, stiffness: 260, damping: 20 });
 
-  if (isCta) {
-    return (
-      <motion.a
-        ref={ref}
-        href={href}
-        style={{ scale, y }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        className="relative inline-flex items-center justify-center gap-2 px-4.5 py-2 rounded-2xl bg-white/12 hover:bg-paper-card text-white hover:text-paper-ink border border-white/20 hover:border-transparent transition-all text-xs font-medium tracking-wide shadow-sm flex-none select-none cursor-pointer"
-      >
-        <span>{label}</span>
-        <ArrowUpRight className="w-3.5 h-3.5 opacity-80" />
-      </motion.a>
-    );
-  }
-
   return (
     <motion.a
       ref={ref}
@@ -58,7 +40,7 @@ function DockItem({ mouseX, icon: Icon, label, href, isCta }: DockItemProps) {
       style={{ scale, y }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/8 text-sylva-ink-soft hover:text-white transition-all text-xs font-light tracking-wide whitespace-nowrap flex-none select-none"
+      className="relative inline-flex items-center justify-center gap-2 px-4 py-2 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/10 text-sylva-ink-soft hover:text-white transition-all text-xs font-light tracking-wide whitespace-nowrap flex-none select-none cursor-pointer"
     >
       {Icon && <Icon className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100" />}
       <span>{label}</span>
@@ -74,7 +56,7 @@ export function SylvaDock() {
     { label: "Services", href: "#services", icon: Layers },
     { label: "Rework Lab", href: "#rework", icon: Wrench },
     { label: "Academy", href: "#academy", icon: GraduationCap },
-    { label: "Consultation", href: "#consultancy", icon: FileLock2, isCta: true },
+    { label: "Consultation", href: "#consultancy", icon: FileLock2 },
   ];
 
   return (
@@ -95,7 +77,6 @@ export function SylvaDock() {
             icon={item.icon}
             label={item.label}
             href={item.href}
-            isCta={item.isCta}
           />
         ))}
       </motion.nav>
