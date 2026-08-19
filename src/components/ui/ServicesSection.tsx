@@ -2,40 +2,60 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Zap, Layers, Wind, Cpu, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { Zap, Layers, Wind, Cpu, ArrowUpRight, CheckCircle2, Sliders, Briefcase } from "lucide-react";
 
 const disciplines = [
   {
     id: "01",
-    tag: "800V ARCHITECTURE",
-    title: "EV Powertrain & High-Voltage Systems",
+    tag: "STRUCTURAL ARCHITECTURE",
+    title: "Body-in-White (BIW) Concepts & Engineering",
     description:
-      "Design and integration of ultra-efficient electric drive units (EDU), 800V Silicon Carbide inverters, and modular battery cell-to-pack (CTP) structural enclosures.",
-    metrics: ["98.4% Peak Inverter Efficiency", "Immersion & Cold-Plate Cooling", "ISO 26262 ASIL-D Validated"],
+      "Comprehensive structural vehicle engineering covering design principles, manufacturing methods, sheet metal stamping feasibility, welding processes, structural integrity, NVH considerations, and crashworthiness packaging constraints.",
+    metrics: [
+      "Class-A & Class-B Surfacing in CATIA V6 and NX",
+      "Stamping Feasibility, Hemming & Flange Design",
+      "Spot, Laser & Arc Welding Joint Integrity Analysis",
+      "Crashworthiness Load Paths & Torsional Rigidity",
+    ],
   },
   {
     id: "02",
-    tag: "MULTI-BODY KINEMATICS",
-    title: "Body-in-White (BIW) & Chassis Dynamics",
+    tag: "COCKPIT & CABIN SYSTEMS",
+    title: "Interior Trim Development & Perceived Quality",
     description:
-      "Advanced suspension kinematics, carbon-composite lightweighting, elastokinematics optimization, and multi-body chassis dynamics simulation.",
-    metrics: ["-25% Unsprung Mass Reduction", "Finite Element (FEA) Stress Analysis", "Active Damping & Roll Control"],
+      "End-to-end development of automotive interior systems. Expertise spans engineering plastics, soft trim, ergonomic packaging constraints, tooling draft angles, fastener integration, perceived quality, and acoustic NVH performance.",
+    metrics: [
+      "A/B/C-Pillar, Door Card & Instrument Panel Trim",
+      "Engineering Resins, Thermoplastics & Structural Foams",
+      "Tooling Draft Angles, Ribs & Attachment Features",
+      "Fit-and-Finish Alignment & Gap/Flushness Audits",
+    ],
   },
   {
     id: "03",
-    tag: "AERO & THERMAL CFD",
-    title: "Aerodynamic CFD & Thermal Management",
+    tag: "DRIVETRAIN & HV BATTERY",
+    title: "Powertrain Engineering & Thermal Integration",
     description:
-      "High-fidelity computational fluid dynamics (CFD) for drag minimization, brake cooling airflow, and battery pack thermodynamic stability under extreme track loads.",
-    metrics: ["Cd 0.20-0.23 Target Windows", "Transient Thermal Runaway CFD", "Active Aero Shutter Integration"],
+      "Integrated powertrain solutions supporting ICE, Hybrid, and full 800V Battery Electric Vehicles (BEV). Encompasses engine/EDU mounting, drivetrain integration, thermal management CFD, and modular battery cell-to-pack (CTP) enclosures.",
+    metrics: [
+      "Engine & Electric Drive Unit (EDU) Torque Mounting",
+      "800V Silicon Carbide Inverter & Busbar Packaging",
+      "Liquid Cold-Plate Channels & Thermal Runaway CFD",
+      "Cell-to-Pack (CTP) Structural Battery Trays",
+    ],
   },
   {
     id: "04",
-    tag: "REAL-TIME VEHICLE BUS",
-    title: "AUTOSAR Embedded Systems & Telemetry",
+    tag: "END-TO-END EXECUTION",
+    title: "Project Management & Resident Engineering",
     description:
-      "End-to-end electronic control unit (ECU) firmware, CAN-FD / Automotive Ethernet communication, and real-time cloud digital-twin telemetry pipelines.",
-    metrics: ["1000 Hz Subsystem Logging", "Secure OTA Update Architecture", "Hardware-in-the-Loop (HIL) Rig"],
+      "Assisting OEM and Tier-1 clients with end-to-end engineering project management from initial planning and concept design through to construction and plant implementation. Delivering on-site resident engineers, CAD support, and strategic consulting.",
+    metrics: [
+      "APQP, DFMEA/PFMEA & Tooling Timeline Tracking",
+      "Resident Engineers Dispatched On-Site at Assembly Plants",
+      "CMM Metrology, GD&T Drawings & Supplier Audits",
+      "Confidential Engineering Data Exchange under Mutual NDA",
+    ],
   },
 ];
 
@@ -47,18 +67,18 @@ export function ServicesSection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono tracking-widest text-sylva-ink-soft uppercase">
-              <span>// ENGINEERING DISCIPLINES</span>
+              <span>// CORE ENGINEERING SERVICES</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-light text-white tracking-tight">
               Integrated engineering for <span className="italic font-normal text-accent-pale">mission-critical</span> mobility.
             </h2>
             <p className="text-sylva-ink-soft text-sm leading-relaxed font-light">
-              From concept kinematics to production tooling, Anchor Automotive delivers deep technical rigor across every critical vehicle domain.
+              From Body-in-White concepts to interior trim, powertrain integration, and plant resident engineering, Anchor Automotive delivers deep technical rigor across every critical domain.
             </p>
           </div>
 
           <div className="text-xs font-mono text-sylva-ink-faint">
-            TOOLCHAINS: CATIA V6 • ANSYS • MATLAB
+            CATIA V6 • SIEMENS NX • ANSYS • MATLAB
           </div>
         </div>
 

@@ -35,17 +35,28 @@ function DockItem({ mouseX, icon: Icon, label, href, isMark }: DockItemProps) {
   const heightSync = useTransform(distance, [-130, 0, 130], [36, 44, 36]);
   const height = useSpring(heightSync, { mass: 0.1, stiffness: 220, damping: 18 });
 
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
   if (isMark) {
     return (
       <motion.a
         ref={ref}
-        href="/"
+        href="#"
+        onClick={(e) => {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="relative flex items-center justify-center rounded-xl bg-accent-pale text-paper-ink border border-accent-pale hover:bg-white transition-colors shadow-sm flex-none select-none"
+        className="relative flex items-center justify-center p-1.5 rounded-xl bg-paper-card text-paper-ink border border-white/40 hover:bg-white transition-all shadow-sm flex-none select-none cursor-pointer overflow-hidden"
+        aria-label="Scroll to top of Anchor Automotive Group"
       >
-        <Anchor className="w-4 h-4" />
+        <img
+          src={`${basePath}/images/logo.png`}
+          alt="Anchor Automotive Group Logo"
+          className="w-full h-full object-contain"
+        />
       </motion.a>
     );
   }
@@ -69,11 +80,12 @@ export function SylvaDock() {
   const mouseX = useMotionValue(Infinity);
 
   const items = [
-    { label: "Anchor", href: "/", isMark: true },
-    { label: "Capabilities", href: "#services", icon: Layers },
+    { label: "Anchor", href: "#", isMark: true },
+    { label: "About", href: "#about", icon: Compass },
+    { label: "Services", href: "#services", icon: Layers },
     { label: "Rework Lab", href: "#rework", icon: Wrench },
     { label: "Academy", href: "#academy", icon: GraduationCap },
-    { label: "Mutual NDA", href: "#consultancy", icon: FileLock2 },
+    { label: "Consultation", href: "#consultancy", icon: FileLock2 },
   ];
 
   return (

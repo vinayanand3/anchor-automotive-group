@@ -4,6 +4,8 @@ import React from "react";
 import { Anchor, ShieldCheck } from "lucide-react";
 
 export function Footer() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
   return (
     <footer className="border-t border-white/10 bg-sylva-deep text-sylva-ink-soft text-xs relative overflow-hidden py-16 px-4 sm:px-6 lg:px-12 select-none">
       <div className="max-w-7xl mx-auto">
@@ -11,8 +13,12 @@ export function Footer() {
           {/* Brand Col */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-accent-pale text-paper-ink flex items-center justify-center font-bold">
-                <Anchor className="w-4 h-4" />
+              <div className="w-10 h-10 rounded-xl bg-paper-card p-1.5 flex items-center justify-center shadow-sm">
+                <img
+                  src={`${basePath}/images/logo.png`}
+                  alt="Anchor Automotive Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="font-medium tracking-wider text-white text-base">
                 ANCHOR <span className="font-light text-sylva-ink-soft">AUTOMOTIVE</span>

@@ -1,5 +1,6 @@
 import React from "react";
 import { SylvaHero } from "@/components/ui/SylvaHero";
+import { AboutSection } from "@/components/ui/AboutSection";
 import { ServicesSection } from "@/components/ui/ServicesSection";
 import { ReworkLabSection } from "@/components/ui/ReworkLabSection";
 import { AcademySection } from "@/components/ui/AcademySection";
@@ -12,16 +13,19 @@ export default function Home() {
       {/* 1. Sylva-Style Hero with Interactive Stamped Alloy vs. FEA Mesh BIW Structure */}
       <SylvaHero />
 
-      {/* 2. Engineering Disciplines Showcase (Paper Alabaster Cards) */}
+      {/* 2. About Us & Mission Statement (Migrated from anchorautomotivegroup.com) */}
+      <AboutSection />
+
+      {/* 3. Core Engineering Disciplines Showcase (BIW, Interior Trim, Powertrain, Project Mgmt) */}
       <ServicesSection />
 
-      {/* 3. Rapid Production & Rework Lab */}
+      {/* 4. Production Rework & Quality Prototyping Lab (Drilling, Welding, 3D Print, Laser Etch) */}
       <ReworkLabSection />
 
-      {/* 4. Anchor Engineering Academy */}
+      {/* 5. Anchor Engineering Academy (12-Week OEM Curriculum & Market-Ready Training) */}
       <AcademySection />
 
-      {/* 5. Phased Engineering Engagement Framework */}
+      {/* 6. Phased Engineering Engagement Framework */}
       <section className="py-24 border-t border-white/10 bg-sylva-deep">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
@@ -79,7 +83,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. Lead Capture & Mutual NDA Consultation Portal */}
+      {/* 7. Lead Capture & Mutual NDA Consultation Portal */}
       <LeadCaptureSection />
     </div>
   );
