@@ -20,6 +20,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_BASE_PATH: '/anchor-automotive-group'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4

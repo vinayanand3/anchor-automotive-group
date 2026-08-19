@@ -153,7 +153,7 @@ export function BiwHeroViewer() {
         {/* 1. Base Layer: Solid Stamped Stamping BIW (images/1.png) */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <img
-            src="/images/biw-solid.png"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/biw-solid.png`}
             alt="Anchor Automotive BIW Stamped Chassis Structure"
             className="w-full h-full object-contain filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.45)]"
           />
@@ -177,7 +177,7 @@ export function BiwHeroViewer() {
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
         >
           <img
-            src="/images/biw-mesh.png"
+            src={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/images/biw-mesh.png`}
             alt="Anchor Automotive BIW Wireframe Mesh"
             className="w-full h-full object-contain filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)]"
           />
