@@ -9,8 +9,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  trailingSlash: true,
-  basePath: isGithubActions && !isCustomDomain ? repoName : (process.env.NEXT_PUBLIC_BASE_PATH || ''),
+  trailingSlash: isGithubActions ? true : false,
+  basePath: isGithubActions && !isCustomDomain ? repoName : '',
   reactStrictMode: true,
 };
 

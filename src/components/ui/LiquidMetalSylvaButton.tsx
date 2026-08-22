@@ -1,15 +1,21 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 interface LiquidMetalSylvaButtonProps {
   className?: string;
 }
 
 export function LiquidMetalSylvaButton({ className = "" }: LiquidMetalSylvaButtonProps) {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  const [iframeSrc, setIframeSrc] = useState<string>("/sylva-assets/liquid-metal-explore.html");
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isGhPages = window.location.pathname.startsWith("/anchor-automotive-group");
+      const base = isGhPages ? "/anchor-automotive-group" : "";
+      setIframeSrc(`${base}/sylva-assets/liquid-metal-explore.html`);
+    }
+
     const handleMessage = (e: MessageEvent) => {
       if (e.data?.type === "LIQUID_BUTTON_CLICK") {
         const el = document.getElementById("services");
@@ -25,7 +31,7 @@ export function LiquidMetalSylvaButton({ className = "" }: LiquidMetalSylvaButto
       {/* Clean, completely transparent wrapper without extra borders or pill frames */}
       <div className="relative w-[230px] sm:w-[250px] h-[60px] sm:h-[66px] flex items-center justify-center overflow-hidden bg-transparent">
         <iframe
-          src={`${basePath}/sylva-assets/liquid-metal-explore.html`}
+          src={iframeSrc}
           title="Explore the work"
           loading="eager"
           sandbox="allow-scripts allow-same-origin"
