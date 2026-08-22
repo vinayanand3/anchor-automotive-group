@@ -4,7 +4,8 @@ const isCustomDomain = process.env.CUSTOM_DOMAIN === 'true';
 const repoName = '/anchor-automotive-group';
 
 const nextConfig = {
-  output: 'export',
+  // Only use static export when building in GitHub Actions for GitHub Pages
+  ...(isGithubActions ? { output: 'export' } : {}),
   images: {
     unoptimized: true,
   },

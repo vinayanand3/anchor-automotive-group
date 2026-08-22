@@ -1,8 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Wrench, CheckCircle2, Microscope, ArrowUpRight } from "lucide-react";
+import {
+  X,
+  Wrench,
+  CheckCircle2,
+  Microscope,
+  ArrowUpRight,
+  User,
+  Mail,
+  Phone,
+  Building,
+  Loader2,
+} from "lucide-react";
 
 interface ReworkModalProps {
   isOpen: boolean;
@@ -11,7 +22,61 @@ interface ReworkModalProps {
 
 export function ReworkModal({ isOpen, onClose }: ReworkModalProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [selectedService, setSelectedService] = useState("Precision Drilling & Custom Tapping");
+  const [ticketId, setTicketId] = useState("#REWORK-NOVI-8492");
+
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    facility: "",
+    partNumber: "",
+  });
+
+  // Handle ESC key and Body Scroll Lock
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          company: formData.facility || "Production Facility",
+          domain: "Rapid Prototyping & Laser Rework",
+          notes: `Rework Service: ${selectedService} | Part/Qty: ${formData.partNumber}`,
+          source: "rework",
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setTicketId(`#${data.registration.id}`);
+      }
+      setSubmitted(true);
+    } catch (err) {
+      console.error(err);
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -37,7 +102,7 @@ export function ReworkModal({ isOpen, onClose }: ReworkModalProps) {
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 w-9 h-9 rounded-full bg-[#F6F5F2] hover:bg-black/10 text-[#5A606D] hover:text-[#0F1115] border border-black/5 flex items-center justify-center transition-colors"
+            className="absolute top-6 right-6 w-9 h-9 rounded-full bg-[#F6F5F2] hover:bg-black/10 text-[#5A606D] hover:text-[#0F1115] border border-black/5 flex items-center justify-center transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -63,11 +128,14 @@ export function ReworkModal({ isOpen, onClose }: ReworkModalProps) {
               </div>
               <h4 className="text-xl font-bold text-[#0F1115] tracking-tight">Rework Ticket Initiated</h4>
               <p className="text-[#5A606D] text-xs max-w-md mx-auto leading-relaxed">
-                Ticket Reference <span className="font-mono text-[#0F1115] font-semibold">#REWORK-NOVI-8492</span> created. Our shop floor team will review your part specifications and contact you immediately.
+                Ticket Reference <span className="font-mono text-[#0F1115] font-semibold">{ticketId}</span> created. Our shop floor team will review your part specifications and contact you at <span className="font-mono text-[#0F1115]">{formData.phone}</span> immediately.
               </p>
               <button
-                onClick={() => setSubmitted(false)}
-                className="text-xs font-mono text-[#5A606D] hover:text-[#0F1115] underline uppercase pt-2"
+                onClick={() => {
+                  setSubmitted(false);
+                  setFormData({ name: "", phone: "", email: "", facility: "", partNumber: "" });
+                }}
+                className="text-xs font-mono text-[#5A606D] hover:text-[#0F1115] underline uppercase pt-2 cursor-pointer"
               >
                 Submit Another Request
               </button>
@@ -90,7 +158,7 @@ export function ReworkModal({ isOpen, onClose }: ReworkModalProps) {
                       key={s}
                       type="button"
                       onClick={() => setSelectedService(s)}
-                      className={`p-3.5 rounded-2xl border text-left text-xs font-mono transition-all ${
+                      className={`p-3.5 rounded-2xl border text-left text-xs font-mono transition-all cursor-pointer ${
                         selectedService === s
                           ? "bg-[#0F1115] border-[#0F1115] text-white font-semibold shadow-sm"
                           : "bg-[#F6F5F2] border-black/5 text-[#5A606D] hover:text-[#0F1115] hover:bg-black/[0.04]"
@@ -128,38 +196,47 @@ export function ReworkModal({ isOpen, onClose }: ReworkModalProps) {
               </div>
 
               {/* Quote Form */}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSubmitted(true);
-                }}
-                className="space-y-4 pt-2"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <input
                     type="text"
                     required
-                    placeholder="Plant Contact / Engineer Name"
+                    placeholder="Plant Contact Name *"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-xs placeholder-[#717682] focus:border-[#0F1115] focus:bg-white focus:outline-none"
+                  />
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Phone Number *"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full px-4 py-3 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-xs placeholder-[#717682] focus:border-[#0F1115] focus:bg-white focus:outline-none font-mono"
                   />
                   <input
                     type="email"
                     required
-                    placeholder="Corporate Email"
+                    placeholder="Corporate Email *"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-xs placeholder-[#717682] focus:border-[#0F1115] focus:bg-white focus:outline-none"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <input
                     type="text"
-                    required
                     placeholder="Assembly Plant / Facility Location"
+                    value={formData.facility}
+                    onChange={(e) => setFormData({ ...formData, facility: e.target.value })}
                     className="w-full px-4 py-3 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-xs placeholder-[#717682] focus:border-[#0F1115] focus:bg-white focus:outline-none"
                   />
                   <input
                     type="text"
                     placeholder="Part Number / Quantity to Rework"
+                    value={formData.partNumber}
+                    onChange={(e) => setFormData({ ...formData, partNumber: e.target.value })}
                     className="w-full px-4 py-3 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-xs placeholder-[#717682] focus:border-[#0F1115] focus:bg-white focus:outline-none"
                   />
                 </div>
@@ -171,10 +248,20 @@ export function ReworkModal({ isOpen, onClose }: ReworkModalProps) {
 
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0F1115] hover:bg-[#252830] text-white text-xs font-mono uppercase tracking-widest transition-all shadow-md active:scale-95"
+                    disabled={loading}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0F1115] hover:bg-[#252830] text-white text-xs font-mono uppercase tracking-widest transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-60"
                   >
-                    <span>Dispatch Rework Ticket</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Dispatching...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Dispatch Rework Ticket</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </div>
               </form>

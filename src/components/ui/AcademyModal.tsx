@@ -1,8 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, GraduationCap, CheckCircle2, BookOpen, ArrowUpRight } from "lucide-react";
+import {
+  X,
+  GraduationCap,
+  CheckCircle2,
+  BookOpen,
+  ArrowUpRight,
+  User,
+  Mail,
+  Phone,
+  Loader2,
+} from "lucide-react";
 
 interface AcademyModalProps {
   isOpen: boolean;
@@ -11,7 +21,53 @@ interface AcademyModalProps {
 
 export function AcademyModal({ isOpen, onClose }: AcademyModalProps) {
   const [enrolled, setEnrolled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [track, setTrack] = useState("Body-in-White (BIW) Concepts & Surfacing");
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+  });
+
+  // Handle ESC key and Body Scroll Lock
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          company: "Academy Candidate",
+          domain: "Anchor Engineering Academy Training",
+          notes: `Admission application for Track: ${track}`,
+          source: "academy",
+        }),
+      });
+      setEnrolled(true);
+    } catch (err) {
+      console.error(err);
+      setEnrolled(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -37,7 +93,7 @@ export function AcademyModal({ isOpen, onClose }: AcademyModalProps) {
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 w-9 h-9 rounded-full bg-[#F6F5F2] hover:bg-black/10 text-[#5A606D] hover:text-[#0F1115] border border-black/5 flex items-center justify-center transition-colors"
+            className="absolute top-6 right-6 w-9 h-9 rounded-full bg-[#F6F5F2] hover:bg-black/10 text-[#5A606D] hover:text-[#0F1115] border border-black/5 flex items-center justify-center transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -63,11 +119,14 @@ export function AcademyModal({ isOpen, onClose }: AcademyModalProps) {
               </div>
               <h4 className="text-xl font-bold text-[#0F1115] tracking-tight">Application Received</h4>
               <p className="text-[#5A606D] text-xs max-w-md mx-auto leading-relaxed">
-                Your admission request for <span className="text-[#0F1115] font-semibold">{track}</span> has been logged. Our academic coordinator will contact you with the prerequisite syllabus packet.
+                Your admission request for <span className="text-[#0F1115] font-semibold">{track}</span> has been logged. Our academic coordinator will contact you at <span className="font-mono text-[#0F1115]">{formData.phone || formData.email}</span> with the prerequisite syllabus packet.
               </p>
               <button
-                onClick={() => setEnrolled(false)}
-                className="text-xs font-mono text-[#5A606D] hover:text-[#0F1115] underline uppercase pt-2"
+                onClick={() => {
+                  setEnrolled(false);
+                  setFormData({ name: "", phone: "", email: "" });
+                }}
+                className="text-xs font-mono text-[#5A606D] hover:text-[#0F1115] underline uppercase pt-2 cursor-pointer"
               >
                 Submit Another Enrollment
               </button>
@@ -89,7 +148,7 @@ export function AcademyModal({ isOpen, onClose }: AcademyModalProps) {
                       key={t}
                       type="button"
                       onClick={() => setTrack(t)}
-                      className={`p-3.5 rounded-2xl border text-left text-xs font-mono transition-all ${
+                      className={`p-3.5 rounded-2xl border text-left text-xs font-mono transition-all cursor-pointer ${
                         track === t
                           ? "bg-[#0F1115] border-[#0F1115] text-white font-semibold shadow-sm"
                           : "bg-[#F6F5F2] border-black/5 text-[#5A606D] hover:text-[#0F1115] hover:bg-black/[0.04]"
@@ -127,24 +186,30 @@ export function AcademyModal({ isOpen, onClose }: AcademyModalProps) {
               </div>
 
               {/* Registration Form */}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setEnrolled(true);
-                }}
-                className="space-y-4 pt-2"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <input
                     type="text"
                     required
-                    placeholder="Engineer / Candidate Full Name"
+                    placeholder="Candidate Full Name *"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-4 py-3 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-xs placeholder-[#717682] focus:border-[#0F1115] focus:bg-white focus:outline-none"
+                  />
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Phone Number *"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full px-4 py-3 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-xs placeholder-[#717682] focus:border-[#0F1115] focus:bg-white focus:outline-none font-mono"
                   />
                   <input
                     type="email"
                     required
-                    placeholder="Work / University Email"
+                    placeholder="Work / University Email *"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-xs placeholder-[#717682] focus:border-[#0F1115] focus:bg-white focus:outline-none"
                   />
                 </div>
@@ -156,10 +221,20 @@ export function AcademyModal({ isOpen, onClose }: AcademyModalProps) {
 
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0F1115] hover:bg-[#252830] text-white text-xs font-mono uppercase tracking-widest transition-all shadow-md active:scale-95"
+                    disabled={loading}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0F1115] hover:bg-[#252830] text-white text-xs font-mono uppercase tracking-widest transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-60"
                   >
-                    <span>Submit Application</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Enrolling...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Submit Application</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </div>
               </form>

@@ -10,15 +10,22 @@ import {
   Building,
   Mail,
   User,
+  Phone,
   ArrowUpRight,
-  ShieldAlert,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { ForceField } from "@/components/canvasui/ForceField";
 
 export function LeadCaptureSection() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [referenceId, setReferenceId] = useState<string>("#ANCHOR-2026-ENG-8492");
+
   const [formData, setFormData] = useState({
     name: "",
+    phone: "",
     email: "",
     company: "",
     domain: "Body-in-White (BIW) & Chassis Kinematics",
@@ -26,9 +33,35 @@ export function LeadCaptureSection() {
     ndaRequired: true,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          source: "consultation",
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setReferenceId(`#${data.registration.id}`);
+        setSubmitted(true);
+      } else {
+        setError(data.error || "Failed to submit consultation request. Please check inputs.");
+      }
+    } catch (err) {
+      setError("Network connection issue. Please check your connection and retry.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,11 +130,22 @@ export function LeadCaptureSection() {
                   Consultation Request Received
                 </h3>
                 <p className="text-[#5A606D] text-sm max-w-md mx-auto">
-                  Reference ID: <span className="font-mono text-[#0F1115] font-semibold">#ANCHOR-2026-ENG-8492</span>. Our technical director at Novi, MI has been notified.
+                  Reference ID: <span className="font-mono text-[#0F1115] font-semibold">{referenceId}</span>. Our technical director at Novi, MI has logged your specifications and will call back shortly.
                 </p>
                 <div className="pt-4">
                   <button
-                    onClick={() => setSubmitted(false)}
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormData({
+                        name: "",
+                        phone: "",
+                        email: "",
+                        company: "",
+                        domain: "Body-in-White (BIW) & Chassis Kinematics",
+                        notes: "",
+                        ndaRequired: true,
+                      });
+                    }}
                     className="text-xs font-mono text-[#5A606D] hover:text-[#0F1115] underline uppercase"
                   >
                     Submit Another Request
@@ -110,11 +154,18 @@ export function LeadCaptureSection() {
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <div className="flex items-center gap-2 p-3 rounded-2xl bg-rose-50 text-rose-700 text-xs border border-rose-100">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>{error}</span>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {/* Full Name */}
                   <div className="space-y-2">
                     <label className="text-xs font-mono uppercase tracking-wider text-[#717682] font-semibold flex items-center gap-1.5">
-                      <User className="w-3.5 h-3.5 text-[#0F1115]" /> Principal Contact
+                      <User className="w-3.5 h-3.5 text-[#0F1115]" /> Principal Contact Name *
                     </label>
                     <input
                       type="text"
@@ -126,7 +177,24 @@ export function LeadCaptureSection() {
                     />
                   </div>
 
-                  {/* Work Email */}
+                  {/* Phone Number */}
+                  <div className="space-y-2">
+                    <label className="text-xs font-mono uppercase tracking-wider text-[#717682] font-semibold flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-[#0F1115]" /> Direct Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="e.g. +1 (248) 555-0199"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-4 py-3.5 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] placeholder-[#717682] text-sm focus:border-[#0F1115] focus:bg-white focus:outline-none transition-colors font-mono"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Corporate Email */}
                   <div className="space-y-2">
                     <label className="text-xs font-mono uppercase tracking-wider text-[#717682] font-semibold flex items-center gap-1.5">
                       <Mail className="w-3.5 h-3.5 text-[#0F1115]" /> Corporate Email
@@ -140,9 +208,7 @@ export function LeadCaptureSection() {
                       className="w-full px-4 py-3.5 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] placeholder-[#717682] text-sm focus:border-[#0F1115] focus:bg-white focus:outline-none transition-colors"
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {/* Organization */}
                   <div className="space-y-2">
                     <label className="text-xs font-mono uppercase tracking-wider text-[#717682] font-semibold flex items-center gap-1.5">
@@ -157,24 +223,24 @@ export function LeadCaptureSection() {
                       className="w-full px-4 py-3.5 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] placeholder-[#717682] text-sm focus:border-[#0F1115] focus:bg-white focus:outline-none transition-colors"
                     />
                   </div>
+                </div>
 
-                  {/* Engineering Discipline */}
-                  <div className="space-y-2">
-                    <label className="text-xs font-mono uppercase tracking-wider text-[#717682] font-semibold flex items-center gap-1.5">
-                      <FileLock2 className="w-3.5 h-3.5 text-[#0F1115]" /> Engineering Domain
-                    </label>
-                    <select
-                      value={formData.domain}
-                      onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
-                      className="w-full px-4 py-3.5 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-sm focus:border-[#0F1115] focus:bg-white focus:outline-none transition-colors cursor-pointer"
-                    >
-                      <option>Body-in-White (BIW) & Chassis Kinematics</option>
-                      <option>EV Powertrain & Battery CTP Architecture</option>
-                      <option>CFD Aerodynamics & Thermal Management</option>
-                      <option>Rapid Prototyping & Laser Rework</option>
-                      <option>Anchor Engineering Academy Training</option>
-                    </select>
-                  </div>
+                {/* Engineering Discipline */}
+                <div className="space-y-2">
+                  <label className="text-xs font-mono uppercase tracking-wider text-[#717682] font-semibold flex items-center gap-1.5">
+                    <FileLock2 className="w-3.5 h-3.5 text-[#0F1115]" /> Engineering Domain
+                  </label>
+                  <select
+                    value={formData.domain}
+                    onChange={(e) => setFormData({ ...formData, domain: e.target.value })}
+                    className="w-full px-4 py-3.5 rounded-2xl bg-[#F6F5F2] border border-black/10 text-[#0F1115] text-sm focus:border-[#0F1115] focus:bg-white focus:outline-none transition-colors cursor-pointer"
+                  >
+                    <option>Body-in-White (BIW) & Chassis Kinematics</option>
+                    <option>EV Powertrain & Battery CTP Architecture</option>
+                    <option>CFD Aerodynamics & Thermal Management</option>
+                    <option>Rapid Prototyping & Laser Rework</option>
+                    <option>Anchor Engineering Academy Training</option>
+                  </select>
                 </div>
 
                 {/* Project Scope */}
@@ -183,7 +249,7 @@ export function LeadCaptureSection() {
                     Project Scope & Technical Targets
                   </label>
                   <textarea
-                    rows={4}
+                    rows={3}
                     placeholder="Outline key vehicle packaging constraints, CAD file types (STEP, CATIA, Parasolid), mass targets, and delivery timelines..."
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
@@ -217,10 +283,20 @@ export function LeadCaptureSection() {
 
                   <button
                     type="submit"
-                    className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#0F1115] hover:bg-[#252830] text-white text-xs font-mono uppercase tracking-widest transition-all shadow-md active:scale-95 cursor-pointer"
+                    disabled={loading}
+                    className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#0F1115] hover:bg-[#252830] text-white text-xs font-mono uppercase tracking-widest transition-all shadow-md active:scale-95 cursor-pointer disabled:opacity-60"
                   >
-                    <span>Submit Engineering RFP</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Logging Request...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Submit Engineering RFP</span>
+                        <ArrowUpRight className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </div>
               </form>

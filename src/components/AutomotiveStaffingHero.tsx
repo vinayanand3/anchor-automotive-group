@@ -11,7 +11,11 @@ import {
   Users,
   Layers,
   Crosshair,
+  Menu,
+  X,
+  Lock,
 } from "lucide-react";
+import Link from "next/link";
 
 import { KineticGrid } from "@/components/ui/KineticGrid";
 import { LiquidMetalSylvaButton } from "@/components/ui/LiquidMetalSylvaButton";
@@ -162,6 +166,7 @@ const itemVariants: Variants = {
 export function AutomotiveStaffingHero() {
   const [activeDiscipline, setActiveDiscipline] = useState<string>("biw");
   const [mounted, setMounted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -193,9 +198,9 @@ export function AutomotiveStaffingHero() {
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="w-full flex items-center justify-between pointer-events-auto border-b border-black/[0.08] pb-4 gap-4"
+          className="w-full flex items-center justify-between pointer-events-auto border-b border-black/[0.08] pb-4 gap-4 relative"
         >
-          {/* Left: Logo & Identity (Compact, no overlapping badge) */}
+          {/* Left: Logo & Identity */}
           <div className="flex items-center gap-3 flex-none">
             <div className="w-10 h-10 rounded-xl bg-white border border-black/[0.08] flex items-center justify-center shadow-sm">
               <Car className="w-5 h-5 text-[#0F1115]" />
@@ -210,12 +215,12 @@ export function AutomotiveStaffingHero() {
             </div>
           </div>
 
-          {/* Center: Integrated Floating Capsule Dock (Zero Collision Flex Layout) */}
+          {/* Center: Integrated Floating Capsule Dock (Desktop Viewport) */}
           <div className="hidden lg:flex items-center justify-center flex-1 px-2">
             <SylvaDock />
           </div>
 
-          {/* Right: Action & Status Indicator */}
+          {/* Right: Action & Status Indicator + Mobile Menu Button */}
           <div className="flex items-center gap-3 flex-none">
             <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-black/[0.08] text-xs text-[#5A606D] font-mono shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -231,8 +236,82 @@ export function AutomotiveStaffingHero() {
                 <ArrowUpRight className="w-3.5 h-3.5 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </span>
             </a>
+
+            {/* Mobile Hamburger Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 rounded-xl bg-white border border-black/[0.08] text-[#0F1115] shadow-sm hover:bg-[#F6F5F2] transition-colors cursor-pointer"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </motion.header>
+
+        {/* Mobile Navigation Drawer */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="lg:hidden pointer-events-auto w-full bg-white/95 backdrop-blur-2xl border border-black/[0.08] rounded-[2rem] p-6 shadow-xl my-4 space-y-4"
+            >
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                <a
+                  href="#about"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 rounded-xl bg-[#F6F5F2] hover:bg-black/5 text-[#0F1115] flex items-center gap-2"
+                >
+                  <Compass className="w-3.5 h-3.5" />
+                  <span>About</span>
+                </a>
+                <a
+                  href="#services"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 rounded-xl bg-[#F6F5F2] hover:bg-black/5 text-[#0F1115] flex items-center gap-2"
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Services</span>
+                </a>
+                <a
+                  href="#rework"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 rounded-xl bg-[#F6F5F2] hover:bg-black/5 text-[#0F1115] flex items-center gap-2"
+                >
+                  <Crosshair className="w-3.5 h-3.5" />
+                  <span>Rework Lab</span>
+                </a>
+                <a
+                  href="#academy"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-3 rounded-xl bg-[#F6F5F2] hover:bg-black/5 text-[#0F1115] flex items-center gap-2"
+                >
+                  <Users className="w-3.5 h-3.5" />
+                  <span>Academy</span>
+                </a>
+              </div>
+
+              <div className="pt-2 border-t border-black/5 flex items-center justify-between">
+                <Link
+                  href="/admin"
+                  className="text-[11px] font-mono text-[#5A606D] hover:text-[#0F1115] flex items-center gap-1.5"
+                >
+                  <Lock className="w-3 h-3" />
+                  <span>Admin Registration Portal</span>
+                </Link>
+
+                <a
+                  href="#consultancy"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-xs font-mono font-semibold text-[#0F1115] underline"
+                >
+                  Contact & NDA →
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* HERO MAIN BODY */}
         <motion.div

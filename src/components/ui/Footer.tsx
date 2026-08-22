@@ -1,11 +1,10 @@
 "use client";
 
 import React from "react";
-import { ShieldCheck, Car } from "lucide-react";
+import { ShieldCheck, Car, Lock } from "lucide-react";
+import Link from "next/link";
 
 export function Footer() {
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
   return (
     <footer className="border-t border-black/[0.08] bg-[#EFEFEA] text-[#5A606D] text-xs relative overflow-hidden py-16 px-4 sm:px-6 lg:px-12 select-none">
       <div className="max-w-7xl mx-auto">
@@ -69,7 +68,10 @@ export function Footer() {
           <div className="flex items-center gap-6 font-mono text-[10px]">
             <a href="#consultancy" className="hover:text-[#0F1115] transition-colors">PRIVACY POLICY</a>
             <a href="#consultancy" className="hover:text-[#0F1115] transition-colors">MUTUAL NDA PORTAL</a>
-            <a href="#consultancy" className="hover:text-[#0F1115] transition-colors">COMPLIANCE STANDARDS</a>
+            <Link href="/admin" className="hover:text-[#0F1115] transition-colors flex items-center gap-1 text-zinc-500">
+              <Lock className="w-2.5 h-2.5" />
+              <span>ADMIN REGISTRATION PORTAL</span>
+            </Link>
           </div>
         </div>
       </div>
